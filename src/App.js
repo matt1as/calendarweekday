@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import { getWeek, getDate, getMonth, getYear, startOfWeek, endOfWeek } from 'date-fns';
 import 'react-calendar/dist/Calendar.css';
-import './App.css';
+import { Container, Box, TextField, Typography } from '@mui/material';
 
 function App() {
   const [date, setDate] = useState(new Date());
@@ -59,30 +59,43 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <h1>Calendar with Week Number</h1>
-      <div className="calendar-container">
-        <Calendar onChange={onChange} value={date} />
-        <div className="week-number">
-          <h2>Selected Week:</h2>
-          <input
-            type="number"
-            value={weekNumber}
-            onChange={handleWeekNumberChange}
-          />
-          <input
-            type="number"
-            value={year}
-            onChange={handleYearChange}
-          />
-        </div>
-      </div>
-      {startDate && endDate && (
-        <p>
-          The dates for week {weekNumber} of {year} are {startDate} to {endDate}.
-        </p>
-      )}
-    </div>
+    <Container maxWidth="md">
+      <Box my={4}>
+        <Typography variant="h4" component="h1" gutterBottom>
+          Calendar with Week Number
+        </Typography>
+        <Box display="flex" flexDirection={{ xs: 'column', sm: 'row' }} alignItems="center" justifyContent="center">
+          <Calendar onChange={onChange} value={date} />
+          <Box ml={{ sm: 2 }} mt={{ xs: 2, sm: 0 }}>
+            <Box display="flex" flexDirection="column" alignItems="center">
+              <Box mb={1}>
+                <TextField
+                  label="Week Number"
+                  type="number"
+                  value={weekNumber}
+                  onChange={handleWeekNumberChange}
+                />
+              </Box>
+              <Box>
+                <TextField
+                  label="Year"
+                  type="number"
+                  value={year}
+                  onChange={handleYearChange}
+                />
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+        {startDate && endDate && (
+          <Box mt={2}>
+            <Typography variant="body1">
+              The dates for week {weekNumber} of {year} are {startDate} to {endDate}.
+            </Typography>
+          </Box>
+        )}
+      </Box>
+    </Container>
   );
 }
 
