@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/calendarweekday/static/css/main.2a32a039.css",
+    "main.js": "/calendarweekday/static/js/main.19403df2.js",
+    "static/js/453.54834f98.chunk.js": "/calendarweekday/static/js/453.54834f98.chunk.js",
+    "index.html": "/calendarweekday/index.html",
+    "main.2a32a039.css.map": "/calendarweekday/static/css/main.2a32a039.css.map",
+    "main.19403df2.js.map": "/calendarweekday/static/js/main.19403df2.js.map",
+    "453.54834f98.chunk.js.map": "/calendarweekday/static/js/453.54834f98.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.2a32a039.css",
+    "static/js/main.19403df2.js"
+  ]
+}
