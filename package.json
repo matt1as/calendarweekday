@@ -2,7 +2,7 @@
   "name": "calendar-week-app",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://matt1as.github.io/calendarweekday",
+
 
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
