@@ -13,7 +13,7 @@ function App() {
 
   useEffect(() => {
     updateDates(weekNumber, year);
-  }, []);
+  }, [weekNumber, year]);
 
   const onChange = (newDate) => {
     setDate(newDate);
@@ -57,13 +57,13 @@ function App() {
     updateDates(weekNumber, newYear);
     setDate(new Date(newYear, 0, (weekNumber - 1) * 7 + 1));
   };
-
   return (
     <Container maxWidth="md">
-      <Box my={4}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Calendar with Week Number
+      <Box my={4} textAlign="center">
+        <Typography variant="h1" component="h1" gutterBottom>
+          {weekNumber}
         </Typography>
+        {/* Rest of your existing code */}
         <Box display="flex" flexDirection={{ xs: 'column', sm: 'row' }} alignItems="center" justifyContent="center">
           <Calendar onChange={onChange} value={date} />
           <Box ml={{ sm: 2 }} mt={{ xs: 2, sm: 0 }}>
