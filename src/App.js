@@ -5,6 +5,7 @@ import 'react-calendar/dist/Calendar.css';
 import { Container, Box, TextField, Typography } from '@mui/material';
 
 function App() {
+  // State declarations
   const [date, setDate] = useState(new Date());
   const [weekNumber, setWeekNumber] = useState(getWeek(new Date(), { weekStartsOn: 1 }));
   const [year, setYear] = useState(getYear(new Date()));
@@ -13,8 +14,10 @@ function App() {
 
   useEffect(() => {
     updateDates(weekNumber, year);
-  }, [weekNumber, year]);
+  }, []);
 
+  // Handler for date change in the calendar
+  // Updates date, week number, and year states when a new date is selected
   const onChange = (newDate) => {
     setDate(newDate);
     const weekNum = getWeek(newDate, { weekStartsOn: 1 });
@@ -24,6 +27,8 @@ function App() {
     updateDates(weekNum, yearNum);
   };
 
+  // Updates start and end dates for a given week and year
+  // Calculates the first and last day of the week, then formats and sets the dates
   const updateDates = (week, yearNum) => {
     const firstDayOfWeek = startOfWeek(new Date(yearNum, 0, (week - 1) * 7 + 1), { weekStartsOn: 1 });
     const lastDayOfWeek = endOfWeek(new Date(firstDayOfWeek.getTime() + 6 * 24 * 60 * 60 * 1000), { weekStartsOn: 1 });
@@ -32,6 +37,8 @@ function App() {
     setEndDate(getDate(lastDayOfWeek) + '/' + (getMonth(lastDayOfWeek) + 1) + '/' + getYear(lastDayOfWeek));
   };
 
+  // Handles changes to the week number input
+  // Validates input, updates week number state, and refreshes dates if valid
   const handleWeekNumberChange = (e) => {
     const newWeekNumber = parseInt(e.target.value, 10);
     if (isNaN(newWeekNumber) || newWeekNumber < 1 || newWeekNumber > 53) {
@@ -45,6 +52,8 @@ function App() {
     setDate(new Date(year, 0, (newWeekNumber - 1) * 7 + 1));
   };
 
+  // Manages changes to the year input
+  // Validates input, updates year state, and refreshes dates if valid
   const handleYearChange = (e) => {
     const newYear = parseInt(e.target.value, 10);
     if (isNaN(newYear) || newYear < 1 || newYear > 9999) {
@@ -56,7 +65,8 @@ function App() {
     setYear(newYear);
     updateDates(weekNumber, newYear);
     setDate(new Date(newYear, 0, (weekNumber - 1) * 7 + 1));
-  };
+  };  
+  
   return (
     <Container maxWidth="md">
       <Box my={4} textAlign="center">
