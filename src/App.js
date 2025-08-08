@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
-import { getWeek, getYear, startOfWeek, endOfWeek, format } from 'date-fns';
+import { getWeek, getYear, startOfWeek, endOfWeek, format, setWeek } from 'date-fns';
 import 'react-calendar/dist/Calendar.css';
 import { 
   Container, 
@@ -68,8 +68,8 @@ function App() {
   };
 
   const updateDates = (week, yearNum) => {
-    const firstDayOfWeek = startOfWeek(new Date(yearNum, 0, (week - 1) * 7 + 1), { weekStartsOn: 1 });
-    const lastDayOfWeek = endOfWeek(new Date(firstDayOfWeek.getTime() + 6 * 24 * 60 * 60 * 1000), { weekStartsOn: 1 });
+    const firstDayOfWeek = startOfWeek(setWeek(new Date(yearNum, 0, 1), week, { weekStartsOn: 1 }), { weekStartsOn: 1 });
+    const lastDayOfWeek = endOfWeek(firstDayOfWeek, { weekStartsOn: 1 });
 
     setStartDate(format(firstDayOfWeek, 'MMM dd, yyyy'));
     setEndDate(format(lastDayOfWeek, 'MMM dd, yyyy'));
@@ -87,7 +87,7 @@ function App() {
     }
     setWeekNumber(newWeekNumber);
     updateDates(newWeekNumber, year);
-    setDate(new Date(year, 0, (newWeekNumber - 1) * 7 + 1));
+    setDate(setWeek(new Date(year, 0, 1), newWeekNumber, { weekStartsOn: 1 }));
   };
 
   // Manages changes to the year input
@@ -102,7 +102,7 @@ function App() {
     }
     setYear(newYear);
     updateDates(weekNumber, newYear);
-    setDate(new Date(newYear, 0, (weekNumber - 1) * 7 + 1));
+    setDate(setWeek(new Date(newYear, 0, 1), weekNumber, { weekStartsOn: 1 }));
   };  
   
   return (
