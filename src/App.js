@@ -31,11 +31,10 @@ const theme = createTheme({
   },
   typography: {
     h1: {
-      fontSize: '4rem',
+      fontSize: '3.5rem',
       fontWeight: 700,
-      background: 'linear-gradient(45deg, #2563eb, #7c3aed)',
-      WebkitBackgroundClip: 'text',
-      WebkitTextFillColor: 'transparent',
+      color: '#ffffff',
+      textShadow: '0 2px 4px rgba(0,0,0,0.3)',
     },
     h4: {
       fontWeight: 600,
@@ -111,12 +110,12 @@ function App() {
       <CssBaseline />
       <Box sx={{ 
         minHeight: '100vh', 
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        background: 'linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%)',
         py: 4
       }}>
         <Container maxWidth="lg">
           <Box textAlign="center" mb={4}>
-            <Typography variant="h1" component="h1" gutterBottom sx={{ color: 'white', mb: 2 }}>
+            <Typography variant="h1" component="h1" gutterBottom sx={{ mb: 2 }}>
               Week {weekNumber}
             </Typography>
             <Typography variant="h6" sx={{ color: 'white', opacity: 0.9 }}>
@@ -127,12 +126,11 @@ function App() {
           <Grid container spacing={4} justifyContent="center">
             <Grid item xs={12} lg={8}>
               <Paper 
-                elevation={24}
+                elevation={8}
                 sx={{ 
-                  borderRadius: 4,
+                  borderRadius: 3,
                   overflow: 'hidden',
-                  background: 'rgba(255,255,255,0.95)',
-                  backdropFilter: 'blur(20px)'
+                  background: 'rgba(255,255,255,0.98)'
                 }}
               >
                 <Box p={4}>
@@ -183,7 +181,7 @@ function App() {
                     
                     <Grid item xs={12} md={5}>
                       <Box display="flex" flexDirection="column" gap={3}>
-                        <Card sx={{ background: 'linear-gradient(45deg, #2563eb, #3b82f6)' }}>
+                        <Card sx={{ background: theme.palette.primary.main }}>
                           <CardContent sx={{ textAlign: 'center', color: 'white' }}>
                             <Typography variant="h2" sx={{ fontSize: '3rem', mb: 1 }}>
                               📅
@@ -239,8 +237,7 @@ function App() {
             <Box mt={4} display="flex" justifyContent="center">
               <Card 
                 sx={{ 
-                  background: 'rgba(255,255,255,0.95)',
-                  backdropFilter: 'blur(20px)',
+                  background: 'rgba(255,255,255,0.98)',
                   borderRadius: 3,
                   maxWidth: 600,
                   width: '100%'
