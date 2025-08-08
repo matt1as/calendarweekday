@@ -1,11 +1,52 @@
 import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
-import { getWeek, getDate, getMonth, getYear, startOfWeek, endOfWeek } from 'date-fns';
+import { getWeek, getYear, startOfWeek, endOfWeek, format } from 'date-fns';
 import 'react-calendar/dist/Calendar.css';
-import { Container, Box, TextField, Typography } from '@mui/material';
+import { 
+  Container, 
+  Box, 
+  TextField, 
+  Typography, 
+  Paper, 
+  Grid, 
+  Card, 
+  CardContent,
+  Chip,
+  ThemeProvider,
+  createTheme,
+  CssBaseline
+} from '@mui/material';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#2563eb',
+    },
+    secondary: {
+      main: '#7c3aed',
+    },
+    background: {
+      default: '#f8fafc',
+    },
+  },
+  typography: {
+    h1: {
+      fontSize: '4rem',
+      fontWeight: 700,
+      background: 'linear-gradient(45deg, #2563eb, #7c3aed)',
+      WebkitBackgroundClip: 'text',
+      WebkitTextFillColor: 'transparent',
+    },
+    h4: {
+      fontWeight: 600,
+    },
+  },
+  shape: {
+    borderRadius: 16,
+  },
+});
 
 function App() {
-  // State declarations
   const [date, setDate] = useState(new Date());
   const [weekNumber, setWeekNumber] = useState(getWeek(new Date(), { weekStartsOn: 1 }));
   const [year, setYear] = useState(getYear(new Date()));
@@ -14,7 +55,7 @@ function App() {
 
   useEffect(() => {
     updateDates(weekNumber, year);
-  }, []);
+  }, [weekNumber, year]);
 
   // Handler for date change in the calendar
   // Updates date, week number, and year states when a new date is selected
@@ -27,14 +68,12 @@ function App() {
     updateDates(weekNum, yearNum);
   };
 
-  // Updates start and end dates for a given week and year
-  // Calculates the first and last day of the week, then formats and sets the dates
   const updateDates = (week, yearNum) => {
     const firstDayOfWeek = startOfWeek(new Date(yearNum, 0, (week - 1) * 7 + 1), { weekStartsOn: 1 });
     const lastDayOfWeek = endOfWeek(new Date(firstDayOfWeek.getTime() + 6 * 24 * 60 * 60 * 1000), { weekStartsOn: 1 });
 
-    setStartDate(getDate(firstDayOfWeek) + '/' + (getMonth(firstDayOfWeek) + 1) + '/' + getYear(firstDayOfWeek));
-    setEndDate(getDate(lastDayOfWeek) + '/' + (getMonth(lastDayOfWeek) + 1) + '/' + getYear(lastDayOfWeek));
+    setStartDate(format(firstDayOfWeek, 'MMM dd, yyyy'));
+    setEndDate(format(lastDayOfWeek, 'MMM dd, yyyy'));
   };
 
   // Handles changes to the week number input
@@ -68,44 +107,176 @@ function App() {
   };  
   
   return (
-    <Container maxWidth="md">
-      <Box my={4} textAlign="center">
-        <Typography variant="h1" component="h1" gutterBottom>
-          {weekNumber}
-        </Typography>
-        {/* Rest of your existing code */}
-        <Box display="flex" flexDirection={{ xs: 'column', sm: 'row' }} alignItems="center" justifyContent="center">
-          <Calendar onChange={onChange} value={date} />
-          <Box ml={{ sm: 2 }} mt={{ xs: 2, sm: 0 }}>
-            <Box display="flex" flexDirection="column" alignItems="center">
-              <Box mb={1}>
-                <TextField
-                  label="Week Number"
-                  type="number"
-                  value={weekNumber}
-                  onChange={handleWeekNumberChange}
-                />
-              </Box>
-              <Box>
-                <TextField
-                  label="Year"
-                  type="number"
-                  value={year}
-                  onChange={handleYearChange}
-                />
-              </Box>
-            </Box>
-          </Box>
-        </Box>
-        {startDate && endDate && (
-          <Box mt={2}>
-            <Typography variant="body1">
-              The dates for week {weekNumber} of {year} are {startDate} to {endDate}.
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Box sx={{ 
+        minHeight: '100vh', 
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        py: 4
+      }}>
+        <Container maxWidth="lg">
+          <Box textAlign="center" mb={4}>
+            <Typography variant="h1" component="h1" gutterBottom sx={{ color: 'white', mb: 2 }}>
+              Week {weekNumber}
+            </Typography>
+            <Typography variant="h6" sx={{ color: 'white', opacity: 0.9 }}>
+              Calendar Week Navigator
             </Typography>
           </Box>
-        )}
+
+          <Grid container spacing={4} justifyContent="center">
+            <Grid item xs={12} lg={8}>
+              <Paper 
+                elevation={24}
+                sx={{ 
+                  borderRadius: 4,
+                  overflow: 'hidden',
+                  background: 'rgba(255,255,255,0.95)',
+                  backdropFilter: 'blur(20px)'
+                }}
+              >
+                <Box p={4}>
+                  <Grid container spacing={4} alignItems="center">
+                    <Grid item xs={12} md={7}>
+                      <Box sx={{ 
+                        '& .react-calendar': {
+                          width: '100%',
+                          border: 'none',
+                          borderRadius: '16px',
+                          boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
+                          fontFamily: theme.typography.fontFamily,
+                        },
+                        '& .react-calendar__tile': {
+                          borderRadius: '8px',
+                          margin: '2px',
+                          height: '40px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          transition: 'all 0.2s ease',
+                        },
+                        '& .react-calendar__tile--active': {
+                          background: theme.palette.primary.main + ' !important',
+                          color: 'white !important',
+                          fontWeight: 'bold',
+                        },
+                        '& .react-calendar__tile:hover': {
+                          background: theme.palette.primary.light + ' !important',
+                          color: 'white',
+                        },
+                        '& .react-calendar__navigation button': {
+                          fontSize: '16px',
+                          fontWeight: '600',
+                          color: theme.palette.primary.main,
+                        },
+                        '& .react-calendar__month-view__weekdays': {
+                          textAlign: 'center',
+                          textTransform: 'uppercase',
+                          fontWeight: 'bold',
+                          fontSize: '0.75em',
+                          color: theme.palette.text.secondary,
+                        }
+                      }}>
+                        <Calendar onChange={onChange} value={date} />
+                      </Box>
+                    </Grid>
+                    
+                    <Grid item xs={12} md={5}>
+                      <Box display="flex" flexDirection="column" gap={3}>
+                        <Card sx={{ background: 'linear-gradient(45deg, #2563eb, #3b82f6)' }}>
+                          <CardContent sx={{ textAlign: 'center', color: 'white' }}>
+                            <Typography variant="h2" sx={{ fontSize: '3rem', mb: 1 }}>
+                              📅
+                            </Typography>
+                            <Typography variant="h4" gutterBottom>
+                              Week {weekNumber}
+                            </Typography>
+                            <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                              of {year}
+                            </Typography>
+                          </CardContent>
+                        </Card>
+
+                        <Box display="flex" flexDirection="column" gap={2}>
+                          <TextField
+                            label="Week Number"
+                            type="number"
+                            value={weekNumber}
+                            onChange={handleWeekNumberChange}
+                            variant="outlined"
+                            fullWidth
+                            inputProps={{ min: 1, max: 53 }}
+                            sx={{
+                              '& .MuiOutlinedInput-root': {
+                                borderRadius: 2,
+                              }
+                            }}
+                          />
+                          <TextField
+                            label="Year"
+                            type="number"
+                            value={year}
+                            onChange={handleYearChange}
+                            variant="outlined"
+                            fullWidth
+                            inputProps={{ min: 1, max: 9999 }}
+                            sx={{
+                              '& .MuiOutlinedInput-root': {
+                                borderRadius: 2,
+                              }
+                            }}
+                          />
+                        </Box>
+                      </Box>
+                    </Grid>
+                  </Grid>
+                </Box>
+              </Paper>
+            </Grid>
+          </Grid>
+
+          {startDate && endDate && (
+            <Box mt={4} display="flex" justifyContent="center">
+              <Card 
+                sx={{ 
+                  background: 'rgba(255,255,255,0.95)',
+                  backdropFilter: 'blur(20px)',
+                  borderRadius: 3,
+                  maxWidth: 600,
+                  width: '100%'
+                }}
+              >
+                <CardContent>
+                  <Box display="flex" alignItems="center" justifyContent="center" gap={2} flexWrap="wrap">
+                    <Typography variant="h2" sx={{ fontSize: '2rem' }}>
+                      📅
+                    </Typography>
+                    <Typography variant="h6" component="span" color="primary" fontWeight="600">
+                      Week {weekNumber}, {year}:
+                    </Typography>
+                    <Box display="flex" gap={1} flexWrap="wrap" justifyContent="center">
+                      <Chip 
+                        label={startDate} 
+                        color="primary" 
+                        variant="filled"
+                        sx={{ fontSize: '0.9rem', fontWeight: '500' }}
+                      />
+                      <Typography variant="h6" sx={{ alignSelf: 'center' }}>—</Typography>
+                      <Chip 
+                        label={endDate} 
+                        color="secondary" 
+                        variant="filled"
+                        sx={{ fontSize: '0.9rem', fontWeight: '500' }}
+                      />
+                    </Box>
+                  </Box>
+                </CardContent>
+              </Card>
+            </Box>
+          )}
+        </Container>
       </Box>
-    </Container>
+    </ThemeProvider>
   );
 }
 
